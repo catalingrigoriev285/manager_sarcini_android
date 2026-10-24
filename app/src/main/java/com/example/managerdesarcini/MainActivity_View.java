@@ -2,6 +2,7 @@ package com.example.managerdesarcini;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity_View extends AppCompatActivity {
@@ -56,6 +59,7 @@ public class MainActivity_View extends AppCompatActivity {
 
         if(Objects.equals(type, "personal") && Collections.frequency(TaskStore.listType.values(), "personal") == 0){
             TextView temp = new TextView(this);
+            temp.setTextColor(Color.BLACK);
             temp.setText("Nu ai sarcini disponibile!");
             listLayout.addView(temp);
 
@@ -64,6 +68,7 @@ public class MainActivity_View extends AppCompatActivity {
 
         if(Objects.equals(type, "professional") && Collections.frequency(TaskStore.listType.values(), "professional") == 0){
             TextView temp = new TextView(this);
+            temp.setTextColor(Color.BLACK);
             temp.setText("Nu ai sarcini disponibile!");
             listLayout.addView(temp);
 
@@ -72,6 +77,7 @@ public class MainActivity_View extends AppCompatActivity {
 
         if(TaskStore.listTODO.isEmpty()){
             TextView temp = new TextView(this);
+            temp.setTextColor(Color.BLACK);
             temp.setText("Nu ai sarcini disponibile!");
             listLayout.addView(temp);
         } else {
@@ -79,6 +85,7 @@ public class MainActivity_View extends AppCompatActivity {
                 final int taskId = i;
 
                 CheckBox chx = new CheckBox(this);
+                chx.setTextColor(Color.BLACK);
                 chx.setText(String.format("[%s] %s", TaskStore.listType.get(i), TaskStore.listTODO.get(i)));
 
                 chx.setOnCheckedChangeListener(((buttonView, isChecked) -> {
@@ -125,6 +132,13 @@ public class MainActivity_View extends AppCompatActivity {
             displayTasks("personal");
         } else if (selectedItem == R.id.menu_view_profesional) {
             displayTasks("professional");
+        } else if (selectedItem == R.id.menu_view_remove_all){
+            TaskStore.listTODO = new HashMap<>();
+            TaskStore.listActivated = new HashMap<>();
+            TaskStore.listType = new HashMap<>();
+
+            Toast.makeText(this, "Toate sarcinile au fost sterse!", Toast.LENGTH_SHORT).show();
+            displayTasks("all");
         }
 
         return super.onOptionsItemSelected(item);

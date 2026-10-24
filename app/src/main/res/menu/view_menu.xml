@@ -14,4 +14,7 @@
                 android:title="Profesionale" />
         </menu>
     </item>
+    <item
+        android:id="@+id/menu_view_remove_all"
+        android:title="Sterge toate" />
 </menu>
