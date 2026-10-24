@@ -70,7 +70,15 @@ public class MainActivity_Create extends AppCompatActivity {
         }
 
         HashMap<Integer, String> tasks = TaskStore.listTODO;
-        tasks.put(tasks.size() + 1, task);
+
+        int idTask = tasks.size() + 1;
+        tasks.put(idTask, task);
+
+        if(chxPersonal.isChecked()){
+            TaskStore.listType.put(idTask, "personal");
+        } else if(chxProfesional.isChecked()){
+            TaskStore.listType.put(idTask, "professional");
+        }
 
         Toast.makeText(this, "Adaugat cu success!", Toast.LENGTH_SHORT).show();
         inputTask.setText("");

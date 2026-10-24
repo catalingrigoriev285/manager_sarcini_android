@@ -1,16 +1,25 @@
 package com.example.managerdesarcini;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Collections;
+import java.util.Objects;
 
 public class MainActivity_View extends AppCompatActivity {
 
@@ -32,27 +41,36 @@ public class MainActivity_View extends AppCompatActivity {
         buttonBack.setOnClickListener(e -> this.finish());
 
         listLayout = findViewById(R.id.listLayout);
-        listLayout.removeAllViews();
-
-        if(TaskStore.listTODO.size() == 0){
-            TextView temp = new TextView(this);
-            temp.setText("Nu ai sarcini disponibile!");
-            listLayout.addView(temp);
-        } else {
-            for(int i = 1; i <= TaskStore.listTODO.size(); i++){
-                CheckBox chx = new CheckBox(this);
-                chx.setText(TaskStore.listTODO.get(i));
-                listLayout.addView(chx);
-            }
-        }
+        displayTasks("all");
     }
 
     @Override
     protected void onResume(){
         super.onResume();
+        displayTasks("all");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void displayTasks(String type){
         listLayout.removeAllViews();
 
-        if(TaskStore.listTODO.size() == 0){
+        if(Objects.equals(type, "personal") && Collections.frequency(TaskStore.listType.values(), "personal") == 0){
+            TextView temp = new TextView(this);
+            temp.setText("Nu ai sarcini disponibile!");
+            listLayout.addView(temp);
+
+            return;
+        }
+
+        if(Objects.equals(type, "professional") && Collections.frequency(TaskStore.listType.values(), "professional") == 0){
+            TextView temp = new TextView(this);
+            temp.setText("Nu ai sarcini disponibile!");
+            listLayout.addView(temp);
+
+            return;
+        }
+
+        if(TaskStore.listTODO.isEmpty()){
             TextView temp = new TextView(this);
             temp.setText("Nu ai sarcini disponibile!");
             listLayout.addView(temp);
@@ -61,7 +79,7 @@ public class MainActivity_View extends AppCompatActivity {
                 final int taskId = i;
 
                 CheckBox chx = new CheckBox(this);
-                chx.setText(TaskStore.listTODO.get(i));
+                chx.setText(String.format("[%s] %s", TaskStore.listType.get(i), TaskStore.listTODO.get(i)));
 
                 chx.setOnCheckedChangeListener(((buttonView, isChecked) -> {
                     if(isChecked){
@@ -69,12 +87,46 @@ public class MainActivity_View extends AppCompatActivity {
                     }
                 }));
 
-                if(Boolean.TRUE.equals(TaskStore.listActivated.get(i)) == true){
+                if(Boolean.TRUE.equals(TaskStore.listActivated.get(i))){
                     chx.setChecked(true);
                 }
 
-                listLayout.addView(chx);
+                if(Objects.equals(type, "personal")){
+                    if(Objects.equals(TaskStore.listType.get(taskId), "personal")){
+                        listLayout.addView(chx);
+                        return;
+                    }
+                } else if(Objects.equals(type, "professional")){
+                    if(Objects.equals(TaskStore.listType.get(taskId), "professional")){
+                        listLayout.addView(chx);
+                        return;
+                    }
+                } else {
+                    listLayout.addView(chx);
+                }
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.view_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int selectedItem = item.getItemId();
+
+        if (selectedItem == R.id.menu_view_all) {
+            displayTasks("all");
+        } else if (selectedItem == R.id.menu_view_personal) {
+            displayTasks("personal");
+        } else if (selectedItem == R.id.menu_view_profesional) {
+            displayTasks("professional");
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
