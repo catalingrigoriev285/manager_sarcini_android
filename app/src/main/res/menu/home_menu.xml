@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/create_new_task"
+        android:title="Creaza o noua sarcina" />
+    <item
+        android:id="@+id/display_task"
+        android:title="Afiseaza sarcinile" />
+    <item
+        android:id="@+id/remove_task"
+        android:title="Sterge sarcinile" />
+</menu>

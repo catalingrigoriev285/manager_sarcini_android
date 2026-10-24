@@ -14,8 +14,6 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.HashMap;
 
 public class MainActivity_Create extends AppCompatActivity {
-    HashMap<Integer, String> listTODO = new HashMap<>();
-
     Button backButton;
     Button addTaskButton;
     EditText inputTask;
@@ -33,7 +31,6 @@ public class MainActivity_Create extends AppCompatActivity {
 
         backButton = findViewById(R.id.button6);
         backButton.setOnClickListener(e -> {
-            Intent
             finish();
         });
 
@@ -49,7 +46,10 @@ public class MainActivity_Create extends AppCompatActivity {
             return;
         }
 
-        listTODO.put(listTODO.size()+1, task);
+        HashMap<Integer, String> tasks = TaskStore.listTODO;
+        tasks.put(tasks.size() + 1, task);
+
         Toast.makeText(this, "Adaugat cu success!", Toast.LENGTH_SHORT).show();
+        inputTask.setText("");
     }
 }
