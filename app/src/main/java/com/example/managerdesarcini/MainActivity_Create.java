@@ -2,6 +2,7 @@ package com.example.managerdesarcini;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,6 +18,9 @@ public class MainActivity_Create extends AppCompatActivity {
     Button backButton;
     Button addTaskButton;
     EditText inputTask;
+
+    CheckBox chxPersonal;
+    CheckBox chxProfesional;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,25 @@ public class MainActivity_Create extends AppCompatActivity {
         });
 
         inputTask = findViewById(R.id.editTextText);
+
+        chxPersonal = findViewById(R.id.checkBox);
+        chxProfesional = findViewById(R.id.checkBox2);
+
+        chxPersonal.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if(isChecked){
+                if(chxProfesional.isChecked()){
+                    chxProfesional.setChecked(false);
+                }
+            }
+        }));
+
+        chxProfesional.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if(isChecked){
+                if(chxPersonal.isChecked()){
+                    chxPersonal.setChecked(false);
+                }
+            }
+        }));
 
         addTaskButton = findViewById(R.id.button5);
         addTaskButton.setOnClickListener(e -> addTaskItem(inputTask.getText().toString()));
